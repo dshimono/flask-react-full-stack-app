@@ -1,22 +1,65 @@
-import { useEffect, useState } from 'react';
-import Contactlist from './ContactList';
-import './App.css';
+import { useEffect, useState } from "react";
+import Contactlist from "./ContactList";
+import "./App.css";
+import ContactForm from "./ContactForm";
 
 function App() {
-const [contacts, setContacts] = useState([{'firstName': 'Denis', 'lastName': 'Shimono', 'email': 'dshimono@gmail.com', 'id': 1}])
+  const [contacts, setContacts] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentContact, setCurrentContact] = useState({});
 
-useEffect(() => {
-  // fetchContacts()
-}, [])
+  useEffect(() => {
+    fetchContacts();
+  }, []);
 
   const fetchContacts = async () => {
-    const response = await fetch('http://127.0.0.1:5000/contacts')
-    const data = await response.json()
-    setContacts(data.contacts)
-    console.log(data.contacts)
-  }
+    const response = await fetch("http://127.0.0.1:5000/contacts");
+    const data = await response.json();
+    setContacts(data.contacts);
+  };
 
-  return <Contactlist contacts={contacts}/>
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentContact({});
+  };
+
+  const openCreateModel = () => {
+    if (!isModalOpen) setIsModalOpen(true);
+  };
+
+  const openEditModal = (contact) => {
+    if (isModalOpen) return;
+    setCurrentContact(contact);
+    setIsModalOpen(true);
+  };
+
+  const onUpdate = () => {
+    closeModal();
+    fetchContacts();
+  };
+  return (
+    <>
+      <Contactlist
+        contacts={contacts}
+        updateContact={openEditModal}
+        updateCallback={onUpdate}
+      />
+      <button onClick={openCreateModel}>Create New Contact</button>
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={closeModal}>
+              &times;
+            </span>
+            <ContactForm
+              existingContact={currentContact}
+              updateCallback={onUpdate}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 
-export default App
+export default App;

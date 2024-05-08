@@ -11,27 +11,27 @@ def get_contacts():
 
 @app.route("/create_contact", methods=["POST"])
 def create_contact():
-    first_name = request.json.get("first_name")
-    last_name = request.json.get("last_name")
+    first_name = request.json.get("firstName")
+    last_name = request.json.get("lastName")
     email = request.json.get("email")
 
     if not first_name or not last_name or not email:
         return (
-            jsonify({"message": "You must include a firs name, last name and email."}),
+            jsonify({"message": f"You must include a first name, last name and email.\nFirst name: {first_name}, \nLast name: {last_name}, \nEmail: {email}"}),
             400,
             )
     
     new_contact = Contact(first_name=first_name, last_name=last_name, email=email)
     try:
         db.session.add(new_contact)
-        db.session.commit
+        db.session.commit()
     except Exception as e:
         return jsonify({"message": str(e)}), 400
     
     return jsonify({"message": "User created."}), 201
 
 
-@app.route("/updade_contact/<int:user_id>")
+@app.route("/update_contact/<int:user_id>", methods=['POST', 'PATCH'])
 def update_contact(user_id):
     contact = Contact.query.get(user_id)
 
@@ -48,15 +48,18 @@ def update_contact(user_id):
     return jsonify({"message": "User updated."}), 200
 
 
-@app.route("/delete_contact/<int:user_id>")
+@app.route("/delete_contact/<int:user_id>", methods=['DELETE'])
 def delete_contact(user_id):
     contact = Contact.query.get(user_id)
 
     if not contact:
         return jsonify({"message": "User not found."}), 404
 
-    db.session.delete()
-    db.session.commit()
+    try:
+        db.session.delete(contact)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
 
     return jsonify({"message": "User deleted."}), 200
 
