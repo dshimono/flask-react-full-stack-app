@@ -1,20 +1,30 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
+from flask_smorest import Api
 from models import Contact
 from db import db
+from dotenv import load_dotenv
+
 
 def create_app(db_url=None):
     app = Flask(__name__)
+    load_dotenv()
     CORS(app)
-
+    app.config['CORS_HEADERS'] = 'Content-Type'
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mydatabase.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["API_TITLE"] = "Contacts List"
+    app.config["API_VERSION"] = "v1"
+    app.config["OPENAPI_VERSION"] = "3.0.3"
+    app.config["OPENAPI_URL_PREFIX"] = "/"
+    app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger-ui"
+    app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
     db.init_app(app)
 
 
     @app.route("/")
     def hello_world():
-        return "<p>Hello, World!</p>"
+        return "<p>Contact List server is up!</p>"
 
     @app.route("/contacts", methods=["GET"])
     def get_contacts():
@@ -22,7 +32,7 @@ def create_app(db_url=None):
         json_contacts = list(map(lambda x: x.to_json(), contacts))
         return jsonify({"contacts": json_contacts})
 
-
+    @cross_origin()
     @app.route("/create_contact", methods=["POST"])
     def create_contact():
         first_name = request.json.get("firstName")
@@ -44,7 +54,7 @@ def create_app(db_url=None):
         
         return jsonify({"message": "User created."}), 201
 
-
+    @cross_origin()
     @app.route("/update_contact/<int:user_id>", methods=['POST', 'PATCH'])
     def update_contact(user_id):
         contact = Contact.query.get(user_id)
@@ -61,7 +71,7 @@ def create_app(db_url=None):
 
         return jsonify({"message": "User updated."}), 200
 
-
+    @cross_origin()
     @app.route("/delete_contact/<int:user_id>", methods=['DELETE'])
     def delete_contact(user_id):
         contact = Contact.query.get(user_id)
