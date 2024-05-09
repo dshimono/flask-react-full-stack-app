@@ -3,3 +3,4 @@ flask-SQLAlchemy
 python-dotenv
 SQLAlchemy
 Flask-Cors
+gunicorn
