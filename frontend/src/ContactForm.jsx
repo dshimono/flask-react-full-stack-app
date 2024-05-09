@@ -17,7 +17,7 @@ const ContactForm = ({ existingContact = {}, updateCallback }) => {
         };
 
         const url =
-            "https://flask-react-contacts-app.onrender.com:80" +
+            "https://flask-react-contacts-app.onrender.com/" +
             (updating
                 ? "update_contact/${existingContact.id}"
                 : "create_contact");
