@@ -1,13 +1,17 @@
 import React from "react";
 
 const Contactlist = ({ contacts, updateContact, updateCallback }) => {
+    const prod = "https://flask-react-contacts-app.onrender.com/";
+    const local = "http://127.0.0.1:5000/";
+    let apiBackend = local;
+
     const onDelete = async (id) => {
         try {
             const options = {
                 method: "DELETE",
             };
             const response = await fetch(
-                "https://flask-react-contacts-app.onrender.com/delete_contact/${id}",
+                apiBackend + "delete_contact/${id}",
                 options
             );
             if (response.status === 200) {

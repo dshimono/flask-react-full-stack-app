@@ -5,6 +5,10 @@ const ContactForm = ({ existingContact = {}, updateCallback }) => {
     const [lastName, setLastName] = useState(existingContact.lastName || "");
     const [email, setEmail] = useState(existingContact.email || "");
 
+    const prod = "https://flask-react-contacts-app.onrender.com/";
+    const local = "http://127.0.0.1:5000/";
+    let apiBackend = local;
+
     const updating = Object.entries(existingContact).length !== 0;
 
     const onSubmit = async (e) => {
@@ -17,7 +21,7 @@ const ContactForm = ({ existingContact = {}, updateCallback }) => {
         };
 
         const url =
-            "https://flask-react-contacts-app.onrender.com/" +
+            apiBackend +
             (updating
                 ? "update_contact/${existingContact.id}"
                 : "create_contact");

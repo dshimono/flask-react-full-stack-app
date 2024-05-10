@@ -32,7 +32,6 @@ def create_app(db_url=None):
         json_contacts = list(map(lambda x: x.to_json(), contacts))
         return jsonify({"contacts": json_contacts})
 
-    @cross_origin()
     @app.route("/create_contact", methods=["POST"])
     def create_contact():
         first_name = request.json.get("firstName")
@@ -54,7 +53,6 @@ def create_app(db_url=None):
         
         return jsonify({"message": "User created."}), 201
 
-    @cross_origin()
     @app.route("/update_contact/<int:user_id>", methods=['POST', 'PATCH'])
     def update_contact(user_id):
         contact = Contact.query.get(user_id)
@@ -71,7 +69,6 @@ def create_app(db_url=None):
 
         return jsonify({"message": "User updated."}), 200
 
-    @cross_origin()
     @app.route("/delete_contact/<int:user_id>", methods=['DELETE'])
     def delete_contact(user_id):
         contact = Contact.query.get(user_id)
