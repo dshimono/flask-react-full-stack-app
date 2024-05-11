@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_smorest import Api, abort
-from models import Contact
+
+from models import ContactModel
 from db import db
 from dotenv import load_dotenv
 
-from resources.contacts import blp as ContactsBlueprint
+from resources.contact import blp as ContactBlueprint
 
 
 def create_app(db_url=None):
@@ -25,15 +26,15 @@ def create_app(db_url=None):
     db.init_app(app)
 
     api = Api(app)
-    api. register_blueprint(ContactsBlueprint)
+    
+    @app.before_request
+    def create_tables():
+        db.create_all()
 
+    api. register_blueprint(ContactBlueprint)
 
     @app.route("/")
     def hello_world():
         return "<h1>Welcome to Contacts API</h1>"        
-
-    if __name__ == "__main__":
-        with app.app_context():
-            db.create_all()
 
     return app
