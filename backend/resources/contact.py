@@ -43,11 +43,6 @@ class ContactsList(MethodView):
 @blp.route("/contact/<int:user_id>")
 class Contact(MethodView):
 
-    @blp.response(200, ContactSchema)
-    def get(self, user_id):
-        contact_data = ContactModel.query.get_or_404(user_id)       
-        return contact_data
-
     @blp.arguments(ContactSchema)
     def patch(self, contact_data, user_id):
         contact_data = ContactModel.query.get_or_404(user_id)       
@@ -60,7 +55,6 @@ class Contact(MethodView):
         add_update_contact(contact_data)
 
         return jsonify({"message": "Contact updated."})
-
     
     def delete(self, user_id):
         contact = ContactModel.query.get_or_404(user_id)

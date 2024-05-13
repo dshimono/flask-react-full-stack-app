@@ -7,7 +7,7 @@ const ContactForm = ({ existingContact = {}, updateCallback }) => {
 
     const prod = "https://flask-react-contacts-app.onrender.com/";
     const local = "http://127.0.0.1:5000/";
-    let apiBackend = local;
+    let apiBackend = prod;
 
     const updating = Object.entries(existingContact).length !== 0;
 
@@ -22,7 +22,7 @@ const ContactForm = ({ existingContact = {}, updateCallback }) => {
 
         const url =
             apiBackend +
-            (updating ? "contact/${existingContact.id}" : "contacts");
+            (updating ? "contact/" + existingContact.id : "contacts");
         const options = {
             method: updating ? "PATCH" : "POST",
             headers: {

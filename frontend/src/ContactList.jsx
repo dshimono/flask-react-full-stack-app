@@ -10,7 +10,7 @@ const Contactlist = ({ contacts, updateContact, updateCallback }) => {
             const options = {
                 method: "DELETE",
             };
-            const response = await fetch(apiBackend + "contact/${id}", options);
+            const response = await fetch(apiBackend + "contact/" + id, options);
             if (response.status === 200) {
                 updateCallback();
             } else {

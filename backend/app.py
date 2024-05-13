@@ -31,7 +31,7 @@ def create_app(db_url=None):
     def create_tables():
         db.create_all()
 
-    api. register_blueprint(ContactBlueprint)
+    api.register_blueprint(ContactBlueprint)
 
     @app.route("/")
     def hello_world():
