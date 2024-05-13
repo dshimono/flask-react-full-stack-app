@@ -22,7 +22,7 @@ const ContactForm = ({ existingContact = {}, updateCallback }) => {
 
         const url =
             apiBackend +
-            (updating ? "contact/${existingContact.id}" : "contact");
+            (updating ? "contact/${existingContact.id}" : "contacts");
         const options = {
             method: updating ? "PATCH" : "POST",
             headers: {
