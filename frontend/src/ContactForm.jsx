@@ -1,13 +1,10 @@
 import { useState } from "react";
+import { apiBackend } from "./App";
 
 const ContactForm = ({ existingContact = {}, updateCallback }) => {
     const [firstName, setFirstName] = useState(existingContact.firstName || "");
     const [lastName, setLastName] = useState(existingContact.lastName || "");
     const [email, setEmail] = useState(existingContact.email || "");
-
-    const prod = "https://flask-react-contacts-app.onrender.com/";
-    const local = "http://127.0.0.1:5000/";
-    let apiBackend = prod;
 
     const updating = Object.entries(existingContact).length !== 0;
 
