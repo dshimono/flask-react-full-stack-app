@@ -5,5 +5,3 @@ python-dotenv
 SQLAlchemy
 Flask-Cors
 gunicorn
-flask-migrate
-psycopg2
