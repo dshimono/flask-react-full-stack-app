@@ -1,7 +1,9 @@
 Flask
 flask-SQLAlchemy
 flask-Smorest
+flask-migrate
 python-dotenv
 SQLAlchemy
 Flask-Cors
 gunicorn
+psycopg2

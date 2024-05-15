@@ -5,7 +5,7 @@ import ContactForm from "./ContactForm";
 
 const prod = "https://flask-react-contacts-app.onrender.com/";
 const local = "http://127.0.0.1:5000/";
-export let apiBackend = prod;
+export let apiBackend = local;
 
 function App() {
     const [contacts, setContacts] = useState([]);

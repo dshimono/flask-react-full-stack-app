@@ -1,5 +1,7 @@
+import os 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_migrate import Migrate
 from flask_smorest import Api, abort
 
 from models import ContactModel
@@ -14,7 +16,7 @@ def create_app(db_url=None):
     load_dotenv()
     CORS(app)
     app.config['CORS_HEADERS'] = 'Content-Type'
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mydatabase.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///mydatabase.db")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PROPAGATE EXECPTIONS"] = True
     app.config["API_TITLE"] = "Contacts List API"
@@ -24,6 +26,7 @@ def create_app(db_url=None):
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/api-documentation"
     app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
     db.init_app(app)
+    migrate = Migrate(app, db)
 
     api = Api(app)
     
