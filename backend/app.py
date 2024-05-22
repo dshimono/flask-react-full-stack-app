@@ -15,8 +15,8 @@ def create_app(db_url=None):
     app = Flask(__name__)
     load_dotenv()
     CORS(app)
-    app.config['CORS_HEADERS'] = 'Content-Type'
-    app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///mydatabase.db")
+    app.config["CORS_HEADERS"] = "Content-Type"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "DATABASE_URL"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PROPAGATE EXECPTIONS"] = True
     app.config["API_TITLE"] = "Contacts List API"
