@@ -16,7 +16,7 @@ def create_app(db_url=None):
     load_dotenv()
     CORS(app)
     app.config["CORS_HEADERS"] = "Content-Type"
-    app.config["SQLALCHEMY_DATABASE_URI"] = load_dotenv("DATABASE_URL")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PROPAGATE EXECPTIONS"] = True
     app.config["API_TITLE"] = "Contacts List API"
@@ -26,8 +26,14 @@ def create_app(db_url=None):
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/api-documentation"
     app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
     migrate = Migrate(app, db)
+    db.init_app(app)
 
     api = Api(app)
+
+    @app.before_request
+    def create_tables():
+        db.create_all()
+
 
     api.register_blueprint(ContactBlueprint)
 
