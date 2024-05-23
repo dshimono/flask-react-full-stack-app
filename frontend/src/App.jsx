@@ -3,9 +3,9 @@ import Contactlist from "./ContactList";
 import "./App.css";
 import ContactForm from "./ContactForm";
 
-const prod = "https://flask-react-contacts-app.onrender.com/";
-const local = "http://127.0.0.1:5000/";
-export let apiBackend = local;
+// "http://localhost:5000" for local dev;
+// the "import.meta.env" (Vite) should be replaced by "process.env" in Create React App.
+export const apiBackend = import.meta.env.VITE_REACT_APP_API_BACKEND;
 
 function App() {
     const [contacts, setContacts] = useState([]);
